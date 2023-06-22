@@ -14,4 +14,4 @@ export class BadRequestError extends CustomError {
       message: this.message
     }];
   }
-}
+} 
