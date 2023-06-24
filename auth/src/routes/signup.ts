@@ -3,10 +3,8 @@ import jwt from 'jsonwebtoken';
 
 //check body inside the incoming request
 import { body, validationResult } from 'express-validator';
-import { RequestValidationError } from '../errors/request-validation-error';
 import { User } from '../models/user';
-import { BadRequestError } from '../errors/bad-request-error';
-import { validateRequest } from '../middlewares/validateRequest';
+import { validateRequest, BadRequestError } from '@hxtickets/common';
 //validationResult, inspect the middleware of validation and pull out the validation information off, to send back to user
 const router = express.Router();
 
