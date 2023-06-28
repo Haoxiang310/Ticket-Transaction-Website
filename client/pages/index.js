@@ -19,7 +19,6 @@ LandingPage.getInitialProps = async (context) => {
   console.log('LANDING PAGE');
   const client = buildClient(context);
   const { data } = await client.get('/api/users/currentuser');
-  console.log(data);
   return data;
   // //window only exist on browser
   // if(typeof window === 'undefined') {
