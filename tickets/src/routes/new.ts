@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import { requireAuth, validateRequest } from "@hxtickets/common";
 import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -21,6 +23,14 @@ router.post('/api/tickets', requireAuth, [
       userId: req.currentUser!.id
     });
     await ticket.save();
+    //use ticket taht saved into db rather than req.body, incase 
+    //there are pre and post hooks(sanitization) that change the content of ticket
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
+       id: ticket.id,
+       title: ticket.title,
+       price: ticket.price, 
+       userId: ticket.userId
+    });
 
     res.status(201).send(ticket);
 });
